@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LsTodoList</string>
+    <string name="tareafija_1">Sacar al perro</string>
+    <string name="tareafija_2">Comprar el pan</string>
+    <string name="tareafija_3">Revisar el correo de la Salle</string>
+    <string name="tareafija_4">Preparar reuniones del día</string>
+    <string name="tareafija_5">Hacer ejercicio</string>
 </resources>

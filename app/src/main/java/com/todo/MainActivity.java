@@ -7,43 +7,65 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Toast;
+import android.widget.Button;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    ArrayList tareas= new ArrayList<>(Arrays.asList(R.id.tareas)); //hay que hacer el array de las tareas
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Tarea> tareas = new ArrayList<Tarea>(Arrays.asList(
+            new Tarea("Sacar el perro."),
+            new Tarea("Comprar el pan."),
+            new Tarea("Revisar el correo de la Salle."),
+            new Tarea("Preparar reuniones del dia"),
+            new Tarea("Hacer ejercicio.")
+    ));
+    private FloatingActionButton nueva_tarea;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(getIntent().getSerializableExtra("lista_tareas") != null){
+            this.tareas.clear();
+            this.tareas.addAll((ArrayList<Tarea>)getIntent().getSerializableExtra("lista_tareas"));
+        }
+        nueva_tarea = findViewById(R.id.floating_button);
+
+        nueva_tarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                intent.putExtra("lista_tareas",tareas);
+                startActivity(intent);
+            }
+        });
 
         // Getting reference of recyclerView
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView =findViewById(R.id.recycler_view);
 
         // Setting the layout as linear
         // layout for vertical orientation
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        this.layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // Sending reference and data to Adapter
-        Adapter adapter = new Adapter(MainActivity.this, tareas);
+        this.adapter = new TareaAdapter(tareas);
 
         // Setting Adapter to RecyclerView
-        recyclerView.setAdapter((RecyclerView.Adapter) adapter);
-    }
-/*
-        public void onClick(View view) {
-            openSecondActivity();
-        }*/
+        recyclerView.setAdapter(adapter);
 
 
     }
+
     public void openSecondActivity(){
         Intent intent = new Intent(this, SecondActivity.class);
         startActivity(intent);

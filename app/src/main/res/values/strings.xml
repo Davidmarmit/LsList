@@ -5,6 +5,10 @@
     <string name="tareafija_3">Revisar el correo de la Salle</string>
     <string name="tareafija_4">Preparar reuniones del día</string>
     <string name="tareafija_5">Hacer ejercicio</string>
-    <string name="tasks">Tareas: </string>
-
+    <string name="tasks">Tareas:</string>
+    <string name="submit">Añadir</string>
+    <string name="tarea_nueva">Nueva tarea:</string>
+    <string name="text_hint">Introduce el nombre de la tarea</string>
+    <string name="add">Añadir</string>
+    <string name="test">Test Tarea 1</string>
 </resources>

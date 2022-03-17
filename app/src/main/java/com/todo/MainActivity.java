@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting Adapter to RecyclerView
         recyclerView.setAdapter(adapter);
-
-
     }
 
     public void openSecondActivity(){

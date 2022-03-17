@@ -15,6 +15,10 @@ public class Tarea implements Serializable {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public Boolean getHecha() {
         return hecha;
     }

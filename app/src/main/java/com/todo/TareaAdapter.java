@@ -3,6 +3,8 @@ package com.todo;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.view.LayoutInflater;
@@ -10,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 // and implement the unimplemented methods
 public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> {
     private ArrayList<Tarea> tareas;
+    private String mText = "";
 
     // Constructor for initialization
     public TareaAdapter(ArrayList<Tarea> tareas) {
@@ -39,6 +44,36 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
         if(tarea_item.getHecha()){
             holder.text.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
+
+        holder.text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Editar tarea num " + holder.getAdapterPosition());
+
+                EditText input = new EditText(view.getContext());
+                builder.setView(input);
+
+                builder.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(input.getText().toString().isEmpty()){
+                            Toast.makeText(view.getContext(),"Casi, pero no puedo poner una tarea vacia.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            tarea_item.setNombre(input.getText().toString());
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.show();
+            }
+
+        });
 
         holder.check.setChecked(tarea_item.getHecha());
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

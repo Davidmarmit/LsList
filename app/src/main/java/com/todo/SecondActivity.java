@@ -32,6 +32,7 @@ public class SecondActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Casi, pero no puedo añadir una tarea vacia.", Toast.LENGTH_SHORT).show();
                 } else{
                     tareas.add(new Tarea(texto.getText().toString()));
+
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     intent.putExtra("lista_tareas",tareas);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -40,8 +41,5 @@ public class SecondActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-
 }

@@ -52,6 +52,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                 builder.setTitle("Editar tarea num " + holder.getAdapterPosition());
 
                 EditText input = new EditText(view.getContext());
+                input.setText(tarea_item.getNombre());
                 builder.setView(input);
 
                 builder.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
@@ -61,6 +62,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                             Toast.makeText(view.getContext(),"Casi, pero no puedo poner una tarea vacia.", Toast.LENGTH_SHORT).show();
                         }else{
                             tarea_item.setNombre(input.getText().toString());
+                            notifyItemChanged(holder.getAdapterPosition());
                         }
                     }
                 });

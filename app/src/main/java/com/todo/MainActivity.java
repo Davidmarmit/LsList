@@ -28,19 +28,58 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "LsTodoList";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Tarea> tareas = new ArrayList<Tarea>(Arrays.asList(
+    private ArrayList<Tarea> tareas = new ArrayList<> (Arrays.asList(
             new Tarea("Sacar el perro."),
             new Tarea("Comprar el pan."),
             new Tarea("Revisar el correo de la Salle."),
             new Tarea("Preparar reuniones del dia"),
             new Tarea("Hacer ejercicio.")
     ));
+    public static String BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private static Retrofit retrofit = null;
+
+    public void APIClient(){
+        if (retrofit == null){
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        jsonPlaceHolderApi.getTodo().enqueue(new Callback<ArrayList<Tarea>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Tarea>> call, Response<ArrayList<Tarea>> response) {
+                if(response.isSuccessful()){
+                    tareas.clear();
+                    tareas = response.body();
+                    Log.d(TAG, "onResponse: " + tareas);
+                    adapter = new TareaAdapter(tareas);
+                    recyclerView.setAdapter(adapter);
+                }
+                else{
+                    Log.d(TAG, "onResponse: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Tarea>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
 
     public void cargarSpref() {
         SharedPreferences pref = getSharedPreferences("json", Context.MODE_PRIVATE);
@@ -60,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cargarSpref();
+        //cargarSpref();
+        APIClient();
 
         if(getIntent().getSerializableExtra("lista_tareas") != null){
             this.tareas.clear();

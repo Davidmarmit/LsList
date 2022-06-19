@@ -2,7 +2,7 @@
 Aplicació que permet gestionar tasques a realitzar
 
 
-#Integrants:
+# Integrants:
 David Martinez i Iván Herrero
 
 
